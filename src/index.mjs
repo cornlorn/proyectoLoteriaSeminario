@@ -1,7 +1,7 @@
 import "dotenv/config";
 import express from "express";
 import morgan from "morgan";
-import { database } from "./config/database.config.js";
+import { database } from "./config/database.config.mjs";
 import { rutas } from "./rutas/index.ruta.mjs";
 
 const app = express();
