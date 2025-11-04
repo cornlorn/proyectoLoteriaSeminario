@@ -1,7 +1,9 @@
 import "dotenv/config";
 import express from "express";
 import morgan from "morgan";
+import swaggerUI from "swagger-ui-express";
 import { database } from "./config/database.config.mjs";
+import { specs } from "./config/swagger.config.mjs";
 import { rutas } from "./rutas/index.ruta.mjs";
 
 const app = express();
@@ -13,8 +15,8 @@ app.use(morgan("dev"));
 const { SERVER_PORT } = process.env;
 
 app.use("/api", rutas);
-
 app.use("/avatar", express.static("public"));
+app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use((error, _request, response, _next) => {
   console.error(error);
