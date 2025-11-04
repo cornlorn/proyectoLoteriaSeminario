@@ -3,7 +3,7 @@ import multer from "multer";
 import path from "path";
 
 const storage = multer.diskStorage({
-  destination: (request, file, callback) => {
+  destination: (_request, _file, callback) => {
     const uploads = path.join("public", "avatares");
 
     if (!fs.existsSync(uploads)) {
