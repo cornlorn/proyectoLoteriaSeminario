@@ -1,12 +1,13 @@
 import { sequelize } from "../../config/database.config.mjs";
 import { Billetera, Cliente, Token, Usuario } from "../../modelos/index.modelo.mjs";
+import { correoClienteRegistro } from "../../servicios/correo/cliente-registro.servicio.mjs";
 import { hashearContrasena } from "../../utils/password.util.mjs";
 
 export const registrar = async (request, response) => {
   const transaccion = await sequelize.transaction();
 
   try {
-    const { correo, contrasena, nombre, apellido, telefono } = request.body;
+    const { correo, contrasena, nombre, apellido, sexo, telefono } = request.body;
 
     const usuarioExistente = await Usuario.findOne({ where: { correo } });
 
@@ -20,7 +21,13 @@ export const registrar = async (request, response) => {
     );
 
     const cliente = await Cliente.create(
-      { usuario_id: usuario.id, nombre: nombre, apellido: apellido, telefono: telefono },
+      {
+        usuario_id: usuario.id,
+        nombre: nombre,
+        apellido: apellido,
+        sexo: sexo,
+        telefono: telefono,
+      },
       { transaction: transaccion },
     );
 
@@ -36,6 +43,8 @@ export const registrar = async (request, response) => {
     );
 
     await transaccion.commit();
+
+    await correoClienteRegistro(correo, nombre, sexo, valor);
 
     return response.status(201).send({ mensaje: "Cliente registrado correctamente", token: valor });
   } catch (error) {

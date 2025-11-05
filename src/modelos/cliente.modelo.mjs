@@ -7,6 +7,7 @@ export const Cliente = sequelize.define(
     id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
     nombre: { type: DataTypes.STRING, allowNull: false },
     apellido: { type: DataTypes.STRING, allowNull: false },
+    sexo: { type: DataTypes.ENUM("masculino", "femenino"), allowNull: false },
     telefono: { type: DataTypes.STRING, allowNull: false },
     avatar: { type: DataTypes.STRING, allowNull: true },
   },

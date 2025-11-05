@@ -40,6 +40,14 @@ const reglas = [
     .isLength({ min: 1 })
     .withMessage("El apellido debe tener al menos 1 carácter"),
 
+  body("sexo")
+    .trim()
+    .notEmpty()
+    .withMessage("El sexo es obligatorio")
+    .bail()
+    .isIn(["masculino", "femenino"])
+    .withMessage("El sexo debe ser masculino o femenino"),
+
   body("telefono")
     .trim()
     .notEmpty()
