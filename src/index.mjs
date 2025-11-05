@@ -15,7 +15,7 @@ app.use(morgan("dev"));
 const { SERVER_PORT } = process.env;
 
 app.use("/api", rutas);
-app.use("/avatar", express.static("public"));
+app.use("/avatar", express.static("public/avatares"));
 app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use((error, _request, response, _next) => {
