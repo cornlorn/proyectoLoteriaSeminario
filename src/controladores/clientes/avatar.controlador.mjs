@@ -1,4 +1,4 @@
-import { Usuario } from "../../modelos/index.modelo.mjs";
+import { Cliente } from "../../modelos/index.modelo.mjs";
 
 export const cambiar = async (request, response) => {
   try {
@@ -6,15 +6,14 @@ export const cambiar = async (request, response) => {
       return response.status(400).send({ mensaje: "No se ha subido ningún archivo" });
     }
 
-    const usuario = await Usuario.findByPk(request.usuario.id);
+    const cliente = await Cliente.findOne({ where: { usuario_id: request.usuario.id } });
 
-    if (!usuario) {
-      return response.status(404).send({ mensaje: "Usuario no encontrado" });
+    if (!cliente) {
+      return response.status(404).send({ mensaje: "Cliente no encontrado" });
     }
 
-    usuario.avatar = `/avatar/${request.file.filename}`;
-    console.log(`Ruta del avatar guardada: ${usuario.avatar}`);
-    await usuario.save();
+    cliente.avatar = `avatar/${request.file.filename}`;
+    await cliente.save();
 
     response.status(200).send({ mensaje: "Avatar subido correctamente" });
   } catch (error) {

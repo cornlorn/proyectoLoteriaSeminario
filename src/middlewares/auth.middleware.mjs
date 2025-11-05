@@ -17,7 +17,6 @@ export const autenticar = async (request, response, next) => {
     }
 
     request.usuario = usuario;
-    console.log(`Usuario autenticado: ${usuario}`);
   } catch (error) {
     return response.status(500).send({ mensaje: "Error interno del servidor" });
   }
