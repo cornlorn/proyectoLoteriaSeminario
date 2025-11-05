@@ -1,5 +1,5 @@
 import jwt from "jsonwebtoken";
-import { Billetera, Cliente, Usuario } from "../../modelos/index.modelo.mjs";
+import { Usuario } from "../../modelos/index.modelo.mjs";
 import { compararContrasena } from "../../utils/password.util.mjs";
 
 export const ingresar = async (request, response) => {
