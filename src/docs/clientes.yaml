@@ -1,13 +1,39 @@
 paths:
+  /clientes/registrar:
+    post:
+      tags:
+        - Clientes
+      summary: Registrar nuevo cliente
+      description: Crea una nueva cuenta de cliente con su usuario y billetera
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              correo: "cliente@ejemplo.com"
+              contrasena: "MiPassword123"
+              nombre: "Juan"
+              apellido: "Pérez"
+              telefono: "12345678"
+      responses:
+        "201":
+          description: Cliente registrado correctamente
+          content:
+            application/json:
+              example:
+                mensaje: "Cliente registrado correctamente"
+                token: "123456"
+        "400":
+          description: El correo ya está registrado
+
   /clientes/avatar:
     post:
       tags:
         - Clientes
       summary: Subir avatar del cliente
-      description: Esta ruta permite a un cliente autenticado subir una imagen como avatar.
+      description: Permite subir una imagen como avatar del cliente autenticado
       security:
         - bearerAuth: []
-
       requestBody:
         required: true
         content:
@@ -18,27 +44,42 @@ paths:
                 avatar:
                   type: string
                   format: binary
-                  description: Archivo de imagen del avatar
-
+                  description: Archivo de imagen del avatar (máx 1MB)
       responses:
         "200":
           description: Avatar subido correctamente
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  mensaje:
-                    type: string
-                    example: Avatar subido correctamente
-
+              example:
+                mensaje: "Avatar subido correctamente"
         "400":
           description: No se ha subido ningún archivo
+        "404":
+          description: Cliente no encontrado
+
+  /clientes/perfil:
+    get:
+      tags:
+        - Clientes
+      summary: Obtener perfil del cliente
+      description: Retorna la información completa del perfil del cliente autenticado
+      security:
+        - bearerAuth: []
+      responses:
+        "200":
+          description: Perfil obtenido correctamente
           content:
             application/json:
-              schema:
-                type: object
-                properties:
-                  mensaje:
-                    type: string
-                    example: No se ha subido ningún archivo
+              example:
+                usuario:
+                  id: 1
+                  correo: "cliente@ejemplo.com"
+                  verificado: true
+                  cliente:
+                    nombre: "Juan"
+                    apellido: "Pérez"
+                    avatar: "avatar/1.jpg"
+                    billetera:
+                      saldo: "100.00"
+        "401":
+          description: No autenticado

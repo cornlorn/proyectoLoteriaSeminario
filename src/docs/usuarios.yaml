@@ -1,0 +1,72 @@
+paths:
+  /usuarios/ingresar:
+    post:
+      tags:
+        - Usuarios
+      summary: Iniciar sesión
+      description: Autentica un usuario y retorna un token JWT
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              correo: "usuario@ejemplo.com"
+              contrasena: "MiPassword123"
+      responses:
+        "200":
+          description: Inicio de sesión exitoso
+          content:
+            application/json:
+              example:
+                mensaje: "Inicio de sesión exitoso"
+                token: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+        "401":
+          description: Credenciales inválidas
+        "404":
+          description: Usuario no encontrado
+
+  /usuarios/verificar-correo:
+    post:
+      tags:
+        - Usuarios
+      summary: Verificar correo electrónico
+      description: Verifica el correo del usuario con el código enviado
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              correo: "usuario@ejemplo.com"
+              codigo: "123456"
+      responses:
+        "201":
+          description: Correo verificado correctamente
+          content:
+            application/json:
+              example:
+                mensaje: "Correo verificado correctamente"
+        "400":
+          description: Código inválido o expirado
+
+  /usuarios/reenviar-codigo:
+    post:
+      tags:
+        - Usuarios
+      summary: Reenviar código de verificación
+      description: Genera y envía un nuevo código de verificación al usuario
+      requestBody:
+        required: true
+        content:
+          application/json:
+            example:
+              correo: "usuario@ejemplo.com"
+      responses:
+        "201":
+          description: Código enviado correctamente
+          content:
+            application/json:
+              example:
+                mensaje: "Código de verificación enviado"
+                token: "654321"
+        "400":
+          description: Usuario no encontrado o ya verificado
