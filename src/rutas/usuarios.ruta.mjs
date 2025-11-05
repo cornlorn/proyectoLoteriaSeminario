@@ -6,4 +6,4 @@ const router = Router();
 
 router.post("/ingresar", validarIngreso, ingresar);
 
-export { router as authRutas };
+export { router as usuariosRutas };

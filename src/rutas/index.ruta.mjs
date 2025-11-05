@@ -1,11 +1,11 @@
 import { Router } from "express";
-import { authRutas } from "./auth.ruta.mjs";
 import { clientesRutas } from "./clientes.ruta.mjs";
+import { usuariosRutas } from "./usuarios.ruta.mjs";
 
 const router = Router();
 
-router.use("/clientes", clientesRutas);
+router.use("/usuarios", usuariosRutas);
 
-router.use("/auth", authRutas);
+router.use("/clientes", clientesRutas);
 
 export { router as rutas };
