@@ -14,7 +14,7 @@ const storage = multer.diskStorage({
   },
   filename: (request, file, callback) => {
     const extension = file.originalname.split(".").pop();
-    callback(null, `${request.user.id}.${extension}`);
+    callback(null, `${request.usuario.id}.${extension}`);
   },
 });
 
