@@ -1,5 +1,12 @@
+# Node
 node_modules/
+
+# Variables de entorno
 .env
-.vscode/
-.idea/
-/src/configuracion/db.js
+
+# Archivos de sistema
+.DS_Store
+
+# Archivos subidos
+public/
+uploads/

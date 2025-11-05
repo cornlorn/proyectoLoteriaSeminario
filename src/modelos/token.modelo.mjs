@@ -1,0 +1,13 @@
+import { DataTypes } from "sequelize";
+import { sequelize } from "../config/database.config.mjs";
+
+export const Token = sequelize.define(
+  "Token",
+  {
+    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    tipo: { type: DataTypes.ENUM("verificacion", "recuperacion"), allowNull: false },
+    valor: { type: DataTypes.STRING, allowNull: false },
+    expira: { type: DataTypes.DATE, allowNull: false },
+  },
+  { tableName: "tokens", timestamps: true, createdAt: "creado", updatedAt: "actualizado" },
+);
