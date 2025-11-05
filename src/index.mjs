@@ -29,6 +29,7 @@ try {
   await database();
   app.listen(SERVER_PORT, () => {
     console.log(`Servidor iniciado correctamente en: http://localhost:${SERVER_PORT}`);
+    console.log(`Documentación API disponible en: http://localhost:${SERVER_PORT}/api/docs`);
   });
 } catch (error) {
   console.error("Error al iniciar el servidor:", error);
