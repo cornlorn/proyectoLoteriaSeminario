@@ -48,6 +48,13 @@ const reglas = [
     .isIn(["masculino", "femenino"])
     .withMessage("El sexo debe ser masculino o femenino"),
 
+  body("nacimiento")
+    .notEmpty()
+    .withMessage("La fecha de nacimiento es obligatoria")
+    .bail()
+    .isDate({ format: "YYYY-MM-DD", strict: true })
+    .withMessage("La fecha de nacimiento debe ser una fecha válida en formato YYYY-MM-DD"),
+
   body("telefono")
     .trim()
     .notEmpty()

@@ -7,7 +7,7 @@ export const registrar = async (request, response) => {
   const transaccion = await sequelize.transaction();
 
   try {
-    const { correo, contrasena, nombre, apellido, sexo, telefono } = request.body;
+    const { correo, contrasena, nombre, apellido, sexo, nacimiento, telefono } = request.body;
 
     const usuarioExistente = await Usuario.findOne({ where: { correo } });
 
@@ -26,6 +26,7 @@ export const registrar = async (request, response) => {
         nombre: nombre,
         apellido: apellido,
         sexo: sexo,
+        nacimiento: nacimiento,
         telefono: telefono,
       },
       { transaction: transaccion },
@@ -33,20 +34,20 @@ export const registrar = async (request, response) => {
 
     await Billetera.create({ cliente_id: cliente.id }, { transaction: transaccion });
 
-    const valor = Math.floor(100000 + Math.random() * 900000).toString();
+    const token = Math.floor(100000 + Math.random() * 900000).toString();
     const expira = new Date();
     expira.setHours(expira.getHours() + 12);
 
     await Token.create(
-      { usuario_id: usuario.id, tipo: "verificacion", valor: valor, expira: expira },
+      { usuario_id: usuario.id, tipo: "verificacion", valor: token, expira: expira },
       { transaction: transaccion },
     );
 
     await transaccion.commit();
 
-    await correoClienteRegistro(correo, nombre, sexo, valor);
+    await correoClienteRegistro(correo, nombre, sexo, token);
 
-    return response.status(201).send({ mensaje: "Cliente registrado correctamente", token: valor });
+    return response.status(201).send({ mensaje: "Cliente registrado correctamente", token: token });
   } catch (error) {
     console.error("Error al registrar cliente:", error);
     await transaccion.rollback();
