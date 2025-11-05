@@ -8,7 +8,6 @@ export const Cliente = sequelize.define(
     nombre: { type: DataTypes.STRING, allowNull: false },
     apellido: { type: DataTypes.STRING, allowNull: false },
     telefono: { type: DataTypes.STRING, allowNull: false },
-    identificacion: { type: DataTypes.STRING, allowNull: false, unique: true },
     avatar: { type: DataTypes.STRING, allowNull: true },
   },
   { tableName: "clientes", timestamps: true, createdAt: "creado", updatedAt: "actualizado" },
