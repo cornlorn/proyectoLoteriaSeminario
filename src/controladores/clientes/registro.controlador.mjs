@@ -1,5 +1,6 @@
 import { sequelize } from "../../config/database.config.mjs";
 import { Billetera, Cliente, Usuario } from "../../modelos/index.modelo.mjs";
+import { hashearContrasena } from "../../utils/password.util.mjs";
 
 export const registrar = async (request, response) => {
   const transaccion = await sequelize.transaction();
@@ -7,8 +8,14 @@ export const registrar = async (request, response) => {
   try {
     const { correo, contrasena, nombre, apellido, telefono } = request.body;
 
+    const usuarioExistente = await Usuario.findOne({ where: { correo } });
+
+    if (usuarioExistente) {
+      return response.status(400).send({ error: "El correo ya está registrado" });
+    }
+
     const usuario = await Usuario.create(
-      { correo: correo, contrasena: contrasena },
+      { correo: correo, contrasena: await hashearContrasena(contrasena) },
       { transaction: transaccion },
     );
 
