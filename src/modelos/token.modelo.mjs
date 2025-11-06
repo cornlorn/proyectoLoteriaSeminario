@@ -4,7 +4,7 @@ import { sequelize } from "../config/database.config.mjs";
 export const Token = sequelize.define(
   "Token",
   {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
     tipo: { type: DataTypes.ENUM("verificacion", "recuperacion"), allowNull: false },
     valor: { type: DataTypes.STRING, allowNull: false },
     expira: { type: DataTypes.DATE, allowNull: false },
