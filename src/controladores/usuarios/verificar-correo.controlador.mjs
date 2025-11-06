@@ -2,9 +2,8 @@ import { Token, Usuario } from "../../modelos/index.modelo.mjs";
 
 export const verificarCorreo = async (request, response) => {
   try {
-    const { correo, codigo } = request.body;
-
-    const usuario = await Usuario.findOne({ where: { correo } });
+    const { codigo } = request.body;
+    const usuario = request.usuario;
 
     if (!usuario) {
       return response.status(400).send({ error: "Usuario no encontrado" });

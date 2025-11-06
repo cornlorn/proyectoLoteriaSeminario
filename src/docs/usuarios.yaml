@@ -31,12 +31,13 @@ paths:
         - Usuarios
       summary: Verificar correo electrónico
       description: Verifica el correo del usuario con el código enviado
+      security:
+        - bearerAuth: []
       requestBody:
         required: true
         content:
           application/json:
             example:
-              correo: "usuario@ejemplo.com"
               codigo: "123456"
       responses:
         "201":
