@@ -12,7 +12,7 @@ export const cambiar = async (request, response) => {
       return response.status(404).send({ mensaje: "Cliente no encontrado" });
     }
 
-    cliente.avatar = `avatar/${request.file.filename}`;
+    cliente.avatar = `profile/${request.usuario.id}/${request.file.filename}`;
     await cliente.save();
 
     response.status(200).send({ mensaje: "Avatar subido correctamente" });

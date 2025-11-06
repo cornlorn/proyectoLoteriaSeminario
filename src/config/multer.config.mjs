@@ -3,8 +3,8 @@ import multer from "multer";
 import path from "path";
 
 const storage = multer.diskStorage({
-  destination: (_request, _file, callback) => {
-    const uploads = path.join("public", "avatares");
+  destination: (request, _file, callback) => {
+    const uploads = path.join("public", "profile", request.usuario.id.toString());
 
     if (!fs.existsSync(uploads)) {
       fs.mkdirSync(uploads, { recursive: true });
@@ -14,14 +14,14 @@ const storage = multer.diskStorage({
   },
   filename: (request, file, callback) => {
     const extension = file.originalname.split(".").pop();
-    callback(null, `${request.usuario.id}.${extension}`);
+    callback(null, `${crypto.randomUUID()}.${extension}`);
   },
 });
 
 export const upload = multer({
   storage,
   limits: { fileSize: 1 * 1024 * 1024 },
-  fileFilter: (request, file, callback) => {
+  fileFilter: (_request, file, callback) => {
     const allowed = ["image/jpeg", "image/png"];
     callback(null, allowed.includes(file.mimetype));
   },
