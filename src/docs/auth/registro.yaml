@@ -9,7 +9,7 @@
       content:
         application/json:
           example:
-            correo: "cliente@ejemplo.com"
+            correo: "cliente@correo.com"
             contrasena: "Contrasena2025"
             nombre: "Luis"
             apellido: "Hernández"
