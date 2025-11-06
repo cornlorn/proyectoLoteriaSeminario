@@ -14,6 +14,8 @@ paths:
               contrasena: "MiPassword123"
               nombre: "Juan"
               apellido: "Pérez"
+              sexo: "masculino"
+              nacimiento: "2000-01-01"
               telefono: "12345678"
       responses:
         "201":
