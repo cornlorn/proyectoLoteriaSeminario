@@ -4,7 +4,7 @@ import { sequelize } from "../config/database.config.mjs";
 export const Usuario = sequelize.define(
   "Usuario",
   {
-    id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+    id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
     correo: { type: DataTypes.STRING, allowNull: false, unique: true },
     contrasena: { type: DataTypes.STRING, allowNull: false },
     estado: { type: DataTypes.ENUM("activo", "inactivo"), defaultValue: "activo" },

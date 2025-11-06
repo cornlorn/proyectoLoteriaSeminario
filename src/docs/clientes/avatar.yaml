@@ -1,0 +1,38 @@
+/clientes/avatar:
+  post:
+    tags:
+      - Clientes
+    summary: Subir avatar del cliente
+    description: Permite subir una imagen como avatar del cliente autenticado
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        multipart/form-data:
+          schema:
+            type: object
+            properties:
+              avatar:
+                type: string
+                format: binary
+                description: Archivo de imagen del avatar (máx 1MB)
+    responses:
+      "200":
+        description: Avatar subido correctamente
+      "400":
+        description: No se ha subido ningún archivo
+      "404":
+        description: Cliente no encontrado
+  delete:
+    tags:
+      - Clientes
+    summary: Eliminar avatar del cliente
+    description: Permite eliminar el avatar del cliente autenticado
+    security:
+      - bearerAuth: []
+    responses:
+      "200":
+        description: Avatar eliminado correctamente
+      "404":
+        description: Cliente no encontrado o sin avatar

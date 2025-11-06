@@ -1,3 +1,4 @@
+import cors from "cors";
 import "dotenv/config";
 import express from "express";
 import morgan from "morgan";
@@ -8,6 +9,7 @@ import { rutas } from "./rutas/index.ruta.mjs";
 
 const app = express();
 
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(morgan("dev"));
@@ -15,7 +17,7 @@ app.use(morgan("dev"));
 const { SERVER_PORT } = process.env;
 
 app.use("/api", rutas);
-app.use("/avatar", express.static("public/avatares"));
+app.use("/profile", express.static("public/profile"));
 app.use("/api/docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 app.use((error, _request, response, _next) => {

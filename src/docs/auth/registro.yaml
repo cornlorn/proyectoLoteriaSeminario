@@ -1,0 +1,23 @@
+/auth/registrar:
+  post:
+    tags:
+      - Autenticación
+    summary: Registrar nuevo cliente
+    description: Crea una nueva cuenta de cliente con su usuario y billetera
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            correo: "cliente@correo.com"
+            contrasena: "Contrasena2025"
+            nombre: "Luis"
+            apellido: "Hernández"
+            sexo: "masculino"
+            nacimiento: "1985-10-12"
+            telefono: "82146290"
+    responses:
+      "201":
+        description: Cliente registrado correctamente
+      "400":
+        description: El correo ya está registrado

@@ -1,0 +1,20 @@
+/auth/ingresar:
+  post:
+    tags:
+      - Autenticación
+    summary: Iniciar sesión
+    description: Autentica un usuario y retorna un token JWT
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            correo: "cliente@correo.com"
+            contrasena: "Contrasena2025"
+    responses:
+      "200":
+        description: Inicio de sesión exitoso
+      "401":
+        description: Credenciales inválidas
+      "404":
+        description: Usuario no encontrado
