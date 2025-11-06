@@ -1,7 +1,20 @@
 import { body } from "express-validator";
 import { withValidation } from "../../middlewares/validaciones.middleware.mjs";
 
-const reglas = [
+const solicitar = [
+  body("correo")
+    .trim()
+    .notEmpty()
+    .withMessage("El correo es obligatorio")
+    .bail()
+    .isEmail()
+    .withMessage("Debe ser un correo válido")
+    .normalizeEmail(),
+];
+
+export const validarSolicitar = withValidation(solicitar);
+
+const restablecer = [
   body("correo")
     .trim()
     .notEmpty()
@@ -30,4 +43,4 @@ const reglas = [
     .withMessage("Debe contener al menos una mayúscula, una minúscula y un número"),
 ];
 
-export const validarRestablecimientoContrasena = withValidation(reglas);
+export const validarRestablecer = withValidation(restablecer);

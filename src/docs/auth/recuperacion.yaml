@@ -1,0 +1,37 @@
+/auth/recuperacion/solicitar:
+  post:
+    tags:
+      - Autenticación
+    summary: Solicitar recuperación de contraseña
+    description: Envía un código de recuperación de contraseña al correo del usuario
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            correo: "cliente@correo.com"
+    responses:
+      "200":
+        description: Código de recuperación enviado
+      "404":
+        description: Usuario no encontrado
+
+/auth/recuperacion/restablecer:
+  post:
+    tags:
+      - Autenticación
+    summary: Restablecer contraseña
+    description: Restablece la contraseña del usuario usando el código de recuperación
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            correo: "cliente@correo.com"
+            codigo: "123456"
+            contrasena: "Contrasena2026"
+    responses:
+      "200":
+        description: Contraseña restablecida correctamente
+      "400":
+        description: Código inválido o expirado

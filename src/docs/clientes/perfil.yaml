@@ -1,0 +1,13 @@
+/clientes/perfil:
+  get:
+    tags:
+      - Clientes
+    summary: Obtener perfil del cliente
+    description: Retorna la información completa del perfil del cliente autenticado
+    security:
+      - bearerAuth: []
+    responses:
+      "200":
+        description: Perfil obtenido correctamente
+      "401":
+        description: No autenticado

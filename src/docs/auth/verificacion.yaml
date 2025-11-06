@@ -1,0 +1,31 @@
+/auth/correo/verificar:
+  post:
+    tags:
+      - Autenticación
+    summary: Verificar correo electrónico
+    description: Verifica el correo del usuario con el código enviado
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            codigo: "123456"
+    responses:
+      "201":
+        description: Correo verificado correctamente
+      "400":
+        description: Código inválido o expirado
+
+/auth/correo/reenviar:
+  post:
+    tags:
+      - Autenticación
+    summary: Reenviar código de verificación
+    description: Genera y envía un nuevo código de verificación al usuario
+    responses:
+      "201":
+        description: Código enviado correctamente
+      "400":
+        description: Usuario no encontrado o ya verificado

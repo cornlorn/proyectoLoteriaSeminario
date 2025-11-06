@@ -25,4 +25,4 @@ const reglas = [
     .withMessage("Debe contener un número"),
 ];
 
-export const validarIngreso = withValidation(reglas);
+export const validarIngresar = withValidation(reglas);

@@ -10,7 +10,9 @@ export const autenticar = async (request, response, next) => {
     }
 
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    const usuario = await Usuario.findByPk(decoded.id, { attributes: ["id", "correo", "rol"] });
+    const usuario = await Usuario.findByPk(decoded.id, {
+      attributes: ["id", "correo", "rol", "verificado"],
+    });
 
     if (!usuario) {
       return response.status(401).send({ mensaje: "Token inválido" });

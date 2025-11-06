@@ -12,4 +12,4 @@ const reglas = [
     .withMessage("Debe contener solo números"),
 ];
 
-export const validarVerificacionCorreo = withValidation(reglas);
+export const validarVerificar = withValidation(reglas);

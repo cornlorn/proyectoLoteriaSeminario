@@ -64,4 +64,4 @@ const reglas = [
     .withMessage("El teléfono debe tener exactamente 8 dígitos"),
 ];
 
-export const validarRegistroCliente = withValidation(reglas);
+export const validarRegistrar = withValidation(reglas);
