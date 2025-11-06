@@ -1,6 +1,11 @@
 import { Router } from "express";
-import { restablecer, solicitar } from "../../controladores/auth/recuperacion.controlador.mjs";
 import {
+  reenviar,
+  restablecer,
+  solicitar,
+} from "../../controladores/auth/recuperacion.controlador.mjs";
+import {
+  validarReenviar,
   validarRestablecer,
   validarSolicitar,
 } from "../../validaciones/auth/recuperacion.validacion.mjs";
@@ -8,7 +13,7 @@ import {
 const router = Router();
 
 router.post("/solicitar", validarSolicitar, solicitar);
-// router.post("/reenviar", validarReenviarToken, reenviarToken);
+router.post("/reenviar", validarReenviar, reenviar);
 router.post("/restablecer", validarRestablecer, restablecer);
 
 export { router as recuperacionRutas };

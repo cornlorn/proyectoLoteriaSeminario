@@ -14,6 +14,19 @@ const solicitar = [
 
 export const validarSolicitar = withValidation(solicitar);
 
+const reenviar = [
+  body("correo")
+    .trim()
+    .notEmpty()
+    .withMessage("El correo es obligatorio")
+    .bail()
+    .isEmail()
+    .withMessage("Debe ser un correo válido")
+    .normalizeEmail(),
+];
+
+export const validarReenviar = withValidation(reenviar);
+
 const restablecer = [
   body("correo")
     .trim()

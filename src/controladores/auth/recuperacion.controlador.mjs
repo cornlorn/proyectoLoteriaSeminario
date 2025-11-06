@@ -36,6 +36,38 @@ export const solicitar = async (request, response) => {
   }
 };
 
+export const reenviar = async (request, response) => {
+  try {
+    const { correo } = request.body;
+
+    const usuario = await Usuario.findOne({ where: { correo } });
+
+    if (!usuario) {
+      return response.status(404).send({ error: "Usuario no encontrado" });
+    }
+
+    const token = await Token.findOne({ where: { usuario_id: usuario.id, tipo: "recuperacion" } });
+
+    if (!token) {
+      return response.status(400).send({ error: "No hay un código de recuperación activo" });
+    }
+
+    if (token.expira < new Date()) {
+      await token.destroy();
+      return response.status(400).send({ error: "El código de recuperación ha expirado" });
+    }
+
+    await correoRecuperacionContrasena(correo, token.valor);
+
+    return response
+      .status(200)
+      .send({ mensaje: "Se ha reenviado el código de recuperación a tu correo" });
+  } catch (error) {
+    console.error("Error al reenviar código:", error);
+    return response.status(500).send({ error: "Error interno del servidor" });
+  }
+};
+
 export const restablecer = async (request, response) => {
   try {
     const { correo, codigo, contrasena } = request.body;
