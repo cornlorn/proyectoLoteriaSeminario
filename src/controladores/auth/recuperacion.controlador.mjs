@@ -1,5 +1,4 @@
 import { Token, Usuario } from "../../modelos/index.modelo.mjs";
-import { correoRecuperacionContrasena } from "../../servicios/correo/recuperacion-contrasena.servicio.mjs";
 import { generarCodigo, hashearContrasena } from "../../utils/password.util.mjs";
 
 export const solicitar = async (request, response) => {

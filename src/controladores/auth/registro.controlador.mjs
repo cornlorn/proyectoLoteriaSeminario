@@ -1,5 +1,6 @@
 import { sequelize } from "../../config/database.config.mjs";
 import { Billetera, Cliente, Token, Usuario } from "../../modelos/index.modelo.mjs";
+import { correoClienteRegistro } from "../../servicios/correo/correo.servicio.mjs";
 import { hashearContrasena } from "../../utils/password.util.mjs";
 
 export const registrar = async (request, response) => {
@@ -43,7 +44,7 @@ export const registrar = async (request, response) => {
 
     await transaccion.commit();
 
-    console.log("Usuario registrado:", correo, contrasena, codigo);
+    await correoClienteRegistro(correo, codigo);
     return response.status(201).send({ mensaje: "Usuario registrado correctamente" });
   } catch (error) {
     console.error("Error al registrar usuario:", error);
