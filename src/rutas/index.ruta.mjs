@@ -2,6 +2,7 @@ import { Router } from "express";
 import { rutasJuegos } from "./admin/juegos.ruta.mjs";
 import { registroRutasAdmin } from "./admin/registro.ruta.mjs";
 import { rutasSorteos } from "./admin/sorteos.ruta.mjs";
+import { cambiarContrasenaRutas } from "./auth/cambiar-contrasena.ruta.mjs";
 import { ingresoRutas } from "./auth/ingreso.ruta.mjs";
 import { recuperacionRutas } from "./auth/recuperacion.ruta.mjs";
 import { registroRutas } from "./auth/registro.ruta.mjs";
@@ -20,6 +21,7 @@ router.use("/auth/ingresar", ingresoRutas);
 router.use("/auth/registrar", registroRutas);
 router.use("/auth/correo", verificacionRutas);
 router.use("/auth/recuperacion", recuperacionRutas);
+router.use("/auth/contrasena", cambiarContrasenaRutas);
 
 router.use("/admin/registrar", registroRutasAdmin);
 router.use("/admin/juegos", rutasJuegos);
