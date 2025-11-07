@@ -21,7 +21,7 @@ export const solicitar = async (request, response) => {
     await Token.create({
       usuario_id: usuario.id,
       tipo: "recuperacion",
-      valor: codigo,
+      codigo: codigo,
       expira: expira,
     });
 
@@ -57,7 +57,7 @@ export const reenviar = async (request, response) => {
       return response.status(400).send({ error: "El código de recuperación ha expirado" });
     }
 
-    await correoRecuperacionContrasena(correo, token.valor);
+    await correoRecuperacionContrasena(correo, token.codigo);
 
     return response
       .status(200)
@@ -79,7 +79,7 @@ export const restablecer = async (request, response) => {
     }
 
     const token = await Token.findOne({
-      where: { usuario_id: usuario.id, tipo: "recuperacion", valor: codigo },
+      where: { usuario_id: usuario.id, tipo: "recuperacion", codigo: codigo },
     });
 
     if (!token) {

@@ -76,5 +76,5 @@ const cliente = [
     .withMessage("El teléfono debe tener exactamente 8 dígitos"),
 ];
 
-export const validarRegistrarAdmin = withValidation(administrador);
+export const validarRegistrarAdministrador = withValidation(administrador);
 export const validarRegistrarCliente = withValidation(cliente);

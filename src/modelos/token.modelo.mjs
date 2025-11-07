@@ -6,7 +6,7 @@ export const Token = sequelize.define(
   {
     id: { type: DataTypes.UUID, defaultValue: DataTypes.UUIDV4, primaryKey: true },
     tipo: { type: DataTypes.ENUM("verificacion", "recuperacion"), allowNull: false },
-    valor: { type: DataTypes.STRING, allowNull: false },
+    codigo: { type: DataTypes.STRING, allowNull: false },
     expira: { type: DataTypes.DATE, allowNull: false },
   },
   { tableName: "tokens", timestamps: true, createdAt: "creado", updatedAt: "actualizado" },

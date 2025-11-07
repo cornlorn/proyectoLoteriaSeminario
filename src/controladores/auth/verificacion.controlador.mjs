@@ -14,7 +14,7 @@ export const verificar = async (request, response) => {
     }
 
     const token = await Token.findOne({
-      where: { usuario_id: usuario.id, tipo: "verificacion", valor: codigo },
+      where: { usuario_id: usuario.id, tipo: "verificacion", codigo: codigo },
     });
 
     if (!token) {
@@ -49,18 +49,18 @@ export const reenviar = async (request, response) => {
 
     await Token.destroy({ where: { usuario_id: usuario.id, tipo: "verificacion" } });
 
-    const valor = Math.floor(100000 + Math.random() * 900000).toString();
+    const codigo = Math.floor(100000 + Math.random() * 900000).toString();
     const expira = new Date();
     expira.setHours(expira.getHours() + 12);
 
     await Token.create({
       usuario_id: usuario.id,
       tipo: "verificacion",
-      valor: valor,
+      codigo: codigo,
       expira: expira,
     });
 
-    return response.status(201).send({ mensaje: "Código de verificación enviado", token: valor });
+    return response.status(201).send({ mensaje: "Código de verificación enviado", token: codigo });
   } catch (error) {
     console.error("Error al verificar correo:", error);
     return response.status(500).send({ error: "Error interno del servidor" });

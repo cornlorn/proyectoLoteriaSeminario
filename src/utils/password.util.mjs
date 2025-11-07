@@ -1,24 +1,20 @@
 import bcrypt from "bcrypt";
+import crypto from "crypto";
 
-export const generarContrasena = () => {
+export const generarContrasena = (longitud = 12) => {
   const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const array = new Uint32Array(12);
-
-  crypto.getRandomValues(array);
-
   let contrasena = "";
-  for (let i = 0; i < 12; i++) {
-    const indice = array[i] % caracteres.length;
+  for (let i = 0; i < longitud; i++) {
+    const indice = crypto.randomInt(0, caracteres.length);
     contrasena += caracteres.charAt(indice);
   }
-
   return contrasena;
 };
 
-export const hashearContrasena = async (contrasena) => {
-  return await bcrypt.hash(contrasena, 10);
+export const generarCodigo = () => {
+  const numero = crypto.randomInt(0, 1000000);
+  return numero.toString().padStart(6, "0");
 };
 
-export const compararContrasena = async (contrasena, hash) => {
-  return await bcrypt.compare(contrasena, hash);
-};
+export const hashearContrasena = (contrasena) => bcrypt.hash(contrasena, 10);
+export const compararContrasena = (contrasena, hash) => bcrypt.compare(contrasena, hash);
