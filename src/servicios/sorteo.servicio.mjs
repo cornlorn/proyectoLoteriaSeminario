@@ -1,6 +1,7 @@
 import cron from "node-cron";
 import { sequelize } from "../config/database.config.mjs";
 import { Billetera, Boleto, Cliente, Juego, Jugada, Sorteo, Transaccion } from "../modelos/index.modelo.mjs";
+import { calcularPremioBingo, verificarLineasBingo } from "../utils/bingo.util.mjs";
 import { calcularPremio, generarNumeroGanador } from "../utils/juego.util.mjs";
 
 export const programarSorteosAutomaticos = async () => {
@@ -73,7 +74,11 @@ const ejecutarSorteo = async (juego) => {
 
     console.log(`Número ganador de ${juego.nombre}: ${numeroGanador}`);
 
-    await procesarResultados(sorteo, numeroGanador, juego.reglas.multiplicador, transaction);
+    if (juego.nombre === "Bingo Con Todo") {
+      await procesarResultadosBingo(sorteo, numeroGanador, transaction);
+    } else {
+      await procesarResultados(sorteo, numeroGanador, juego.reglas.multiplicador, transaction);
+    }
 
     await transaction.commit();
     console.log(`Sorteo de ${juego.nombre} completado exitosamente`);
@@ -125,6 +130,97 @@ const procesarResultados = async (sorteo, numeroGanador, multiplicador, transact
     console.log(`Total de premios pagados: L. ${totalPremios.toFixed(2)}`);
   } catch (error) {
     console.error("Error al procesar resultados:", error);
+    throw error;
+  }
+};
+
+const procesarResultadosBingo = async (sorteo, numeroGanadorStr, transaction) => {
+  try {
+    const numerosGanadores = JSON.parse(numeroGanadorStr);
+
+    const boletos = await Boleto.findAll({
+      where: { sorteo_id: sorteo.id },
+      include: [
+        { model: Jugada, as: "jugadas", where: { estado: "pendiente" }, required: false },
+        { model: Cliente, as: "cliente", include: [{ model: Billetera, as: "billetera" }] },
+      ],
+      transaction,
+    });
+
+    let totalGanadores = 0;
+    let totalPremios = 0;
+
+    for (const boleto of boletos) {
+      if (!boleto.jugadas || boleto.jugadas.length === 0) continue;
+
+      for (const jugada of boleto.jugadas) {
+        try {
+          const carton = JSON.parse(jugada.numero);
+
+          const resultado = verificarLineasBingo(carton, numerosGanadores);
+
+          if (resultado.esGanador) {
+            const premio = calcularPremioBingo(resultado.cantidadLineas);
+
+            await jugada.update(
+              {
+                estado: "ganadora",
+                premio: premio,
+                detallesBingo: {
+                  carton: carton,
+                  cuadricula: resultado.cuadricula,
+                  numerosGanadores: numerosGanadores,
+                  cantidadLineas: resultado.cantidadLineas,
+                  lineas: resultado.lineas,
+                },
+              },
+              { transaction },
+            );
+
+            const billetera = boleto.cliente.billetera;
+            await billetera.update({ saldo: parseFloat(billetera.saldo) + premio }, { transaction });
+
+            await Transaccion.create(
+              {
+                billetera_id: billetera.id,
+                tipo: "premio",
+                monto: premio,
+                descripcion: `Premio Bingo: ${resultado.cantidadLineas} línea(s)`,
+              },
+              { transaction },
+            );
+
+            totalGanadores++;
+            totalPremios += premio;
+
+            console.log(
+              `Ganador Bingo - Cliente: ${boleto.cliente.nombre}, Líneas: ${resultado.cantidadLineas}, Premio: L. ${premio}`,
+            );
+          } else {
+            await jugada.update(
+              {
+                estado: "perdedora",
+                detallesBingo: {
+                  carton: carton,
+                  cuadricula: resultado.cuadricula,
+                  numerosGanadores: numerosGanadores,
+                  cantidadLineas: 0,
+                  lineas: [],
+                },
+              },
+              { transaction },
+            );
+          }
+        } catch (error) {
+          console.error(`Error al procesar jugada ${jugada.id}:`, error);
+          await jugada.update({ estado: "perdedora" }, { transaction });
+        }
+      }
+    }
+
+    console.log(`Bingo - Total ganadoras: ${totalGanadores}, Premios pagados: L. ${totalPremios.toFixed(2)}`);
+  } catch (error) {
+    console.error("Error al procesar resultados de Bingo:", error);
     throw error;
   }
 };
