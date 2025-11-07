@@ -1,8 +1,9 @@
 import cron from "node-cron";
 import { sequelize } from "../config/database.config.mjs";
-import { Billetera, Boleto, Cliente, Juego, Jugada, Sorteo, Transaccion } from "../modelos/index.modelo.mjs";
+import { Billetera, Boleto, Cliente, Juego, Jugada, Sorteo, Transaccion, Usuario } from "../modelos/index.modelo.mjs";
 import { calcularPremioBingo, verificarLineasBingo } from "../utils/bingo.util.mjs";
 import { calcularPremio, generarNumeroGanador } from "../utils/juego.util.mjs";
+import { correoNotificacionPremio } from "./correo/correo.servicio.mjs";
 
 export const programarSorteosAutomaticos = async () => {
   try {
@@ -102,8 +103,12 @@ const procesarResultados = async (sorteo, numeroGanador, multiplicador, transact
     let totalGanadores = 0;
     let totalPremios = 0;
 
+    const juego = await Juego.findByPk(sorteo.juego_id, { transaction });
+
     for (const boleto of boletos) {
       if (!boleto.jugadas || boleto.jugadas.length === 0) continue;
+
+      let premioTotal = 0;
 
       for (const jugada of boleto.jugadas) {
         const esGanadora = jugada.numero === numeroGanador;
@@ -120,8 +125,19 @@ const procesarResultados = async (sorteo, numeroGanador, multiplicador, transact
 
           totalGanadores++;
           totalPremios += premio;
+          premioTotal += premio;
         } else {
           await jugada.update({ estado: "perdedora" }, { transaction });
+        }
+      }
+
+      if (premioTotal > 0) {
+        const usuario = await Usuario.findByPk(boleto.cliente.usuario_id, { attributes: ["correo"], transaction });
+
+        if (usuario) {
+          correoNotificacionPremio(usuario.correo, boleto.cliente.nombre, juego.nombre, premioTotal).catch((error) => {
+            console.error(`Error al enviar correo de premio a ${usuario.correo}:`, error);
+          });
         }
       }
     }
@@ -150,8 +166,12 @@ const procesarResultadosBingo = async (sorteo, numeroGanadorStr, transaction) =>
     let totalGanadores = 0;
     let totalPremios = 0;
 
+    const juego = await Juego.findByPk(sorteo.juego_id, { transaction });
+
     for (const boleto of boletos) {
       if (!boleto.jugadas || boleto.jugadas.length === 0) continue;
+
+      let premioTotal = 0;
 
       for (const jugada of boleto.jugadas) {
         try {
@@ -192,6 +212,7 @@ const procesarResultadosBingo = async (sorteo, numeroGanadorStr, transaction) =>
 
             totalGanadores++;
             totalPremios += premio;
+            premioTotal += premio;
 
             console.log(
               `Ganador Bingo - Cliente: ${boleto.cliente.nombre}, Líneas: ${resultado.cantidadLineas}, Premio: L. ${premio}`,
@@ -214,6 +235,16 @@ const procesarResultadosBingo = async (sorteo, numeroGanadorStr, transaction) =>
         } catch (error) {
           console.error(`Error al procesar jugada ${jugada.id}:`, error);
           await jugada.update({ estado: "perdedora" }, { transaction });
+        }
+      }
+
+      if (premioTotal > 0) {
+        const usuario = await Usuario.findByPk(boleto.cliente.usuario_id, { attributes: ["correo"], transaction });
+
+        if (usuario) {
+          correoNotificacionPremio(usuario.correo, boleto.cliente.nombre, juego.nombre, premioTotal).catch((error) => {
+            console.error(`Error al enviar correo de premio a ${usuario.correo}:`, error);
+          });
         }
       }
     }

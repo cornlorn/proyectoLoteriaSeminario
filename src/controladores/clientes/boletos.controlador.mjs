@@ -1,5 +1,15 @@
 import { sequelize } from "../../config/database.config.mjs";
-import { Billetera, Boleto, Cliente, Juego, Jugada, Sorteo, Transaccion } from "../../modelos/index.modelo.mjs";
+import {
+  Billetera,
+  Boleto,
+  Cliente,
+  Juego,
+  Jugada,
+  Sorteo,
+  Transaccion,
+  Usuario,
+} from "../../modelos/index.modelo.mjs";
+import { correoNotificacionCompra } from "../../servicios/correo/correo.servicio.mjs";
 import { crearCartonBingoAutomatico } from "../../utils/bingo.util.mjs";
 import { validarBoleto, validarJugada, validarNumeroJuego } from "../../utils/juego.util.mjs";
 
@@ -83,6 +93,13 @@ export const comprarBoletoNumerico = async (request, response) => {
     }
 
     await transaction.commit();
+
+    const usuario = await Usuario.findByPk(cliente.usuario_id, { attributes: ["correo"] });
+
+    if (usuario) {
+      await correoNotificacionCompra(usuario.correo, cliente.nombre, juego.nombre, total, cliente.billetera.saldo);
+    }
+
     const jugadasDB = await Jugada.findAll({ where: { boleto_id: boleto.id } });
     return response.status(201).send({ mensaje: "Boleto comprado", boleto, jugadas: jugadasDB });
   } catch (error) {
@@ -155,6 +172,13 @@ export const comprarBoletoBingo = async (request, response) => {
     }
 
     await transaction.commit();
+
+    const usuario = await Usuario.findByPk(cliente.usuario_id, { attributes: ["correo"] });
+
+    if (usuario) {
+      await correoNotificacionCompra(usuario.correo, cliente.nombre, juego.nombre, total, cliente.billetera.saldo);
+    }
+
     return response.status(201).send({ mensaje: "Cartones comprados", total, boletos: boletosCreados });
   } catch (error) {
     console.error(error);

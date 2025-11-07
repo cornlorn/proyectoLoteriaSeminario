@@ -1,5 +1,6 @@
 import { sequelize } from "../../config/database.config.mjs";
 import { Billetera, Cliente, Transaccion, Usuario } from "../../modelos/index.modelo.mjs";
+import { correoNotificacionRetiro } from "../../servicios/correo/correo.servicio.mjs";
 
 export const retirar = async (request, response) => {
   const transaccion = await sequelize.transaction();
@@ -30,6 +31,13 @@ export const retirar = async (request, response) => {
     );
 
     await transaccion.commit();
+
+    const usuario = await Usuario.findByPk(billetera.cliente.usuario_id, { attributes: ["correo"] });
+
+    if (usuario) {
+      await correoNotificacionRetiro(usuario.correo, billetera.cliente.nombre, monto, saldo);
+    }
+
     return response.status(200).send({ mensaje: "Retiro realizado correctamente", saldo: saldo });
   } catch (error) {
     await transaccion.rollback();
