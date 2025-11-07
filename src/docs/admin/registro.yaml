@@ -14,7 +14,31 @@
             apellido: "Martínez"
     responses:
       "201":
-        description: Administrador registrado correctamente
+        description: Usuario registrado correctamente
+      "400":
+        description: Datos inválidos o correo ya registrado
+      "401":
+        description: No autenticado
+      "403":
+        description: No autorizado - Se requiere rol de administrador
+
+/admin/registrar/vendedor:
+  post:
+    tags:
+      - Administradores
+    summary: Registrar vendedor
+    description: Crea una nueva cuenta de vendedor (solo administradores)
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            correo: "vendedor@correo.com"
+            nombre: "Pedro"
+            apellido: "Morales"
+    responses:
+      "201":
+        description: Usuario registrado correctamente
       "400":
         description: Datos inválidos o correo ya registrado
       "401":
@@ -41,7 +65,7 @@
             telefono: "98273548"
     responses:
       "201":
-        description: Cliente registrado correctamente
+        description: Usuario registrado correctamente
       "400":
         description: Datos inválidos o correo ya registrado
       "401":

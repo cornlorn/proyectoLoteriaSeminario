@@ -27,6 +27,32 @@ const administrador = [
     .withMessage("El apellido debe tener al menos 1 carácter"),
 ];
 
+const vendedor = [
+  body("correo")
+    .trim()
+    .notEmpty()
+    .withMessage("El correo es obligatorio")
+    .bail()
+    .isEmail()
+    .withMessage("Debe ser un correo válido")
+    .normalizeEmail(),
+  body("nombre")
+    .trim()
+    .notEmpty()
+    .withMessage("El nombre es obligatorio")
+    .bail()
+    .isLength({ min: 1 })
+    .withMessage("El nombre debe tener al menos 1 carácter"),
+
+  body("apellido")
+    .trim()
+    .notEmpty()
+    .withMessage("El apellido es obligatorio")
+    .bail()
+    .isLength({ min: 1 })
+    .withMessage("El apellido debe tener al menos 1 carácter"),
+];
+
 const cliente = [
   body("correo")
     .trim()
@@ -77,4 +103,5 @@ const cliente = [
 ];
 
 export const validarRegistrarAdministrador = withValidation(administrador);
+export const validarRegistrarVendedor = withValidation(vendedor);
 export const validarRegistrarCliente = withValidation(cliente);
