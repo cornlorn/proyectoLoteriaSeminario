@@ -36,7 +36,7 @@ try {
   await inicializarAdministrador();
 
   await inicializarJuegos();
-  await crearSorteosFuturos(7);
+  await crearSorteosFuturos(3);
   await programarSorteosAutomaticos();
 
   app.listen(SERVER_PORT, () => {

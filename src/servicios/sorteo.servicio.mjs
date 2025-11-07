@@ -17,7 +17,17 @@ export const programarSorteosAutomaticos = async () => {
       }
     }
 
+    cron.schedule(
+      "30 0 * * *",
+      async () => {
+        console.log("Ejecutando mantenimiento de sorteos futuros...");
+        await crearSorteosFuturos(7);
+      },
+      { timezone: "America/Tegucigalpa" },
+    );
+
     console.log("Sorteos automáticos programados correctamente");
+    console.log("Mantenimiento diario de sorteos programado (00:30)");
   } catch (error) {
     console.error("Error al programar sorteos automáticos:", error);
   }
@@ -122,6 +132,8 @@ const procesarResultados = async (sorteo, numeroGanador, multiplicador, transact
 export const crearSorteosFuturos = async (dias = 7) => {
   try {
     const juegos = await Juego.findAll({ where: { estado: "activo" } });
+    let sorteosCreados = 0;
+    let sorteosExistentes = 0;
 
     for (const juego of juegos) {
       const { reglas } = juego;
@@ -139,12 +151,15 @@ export const crearSorteosFuturos = async (dias = 7) => {
 
           if (!sorteoExistente) {
             await Sorteo.create({ juego_id: juego.id, fechaHora: fechaSorteo, estado: "pendiente" });
+            sorteosCreados++;
+          } else {
+            sorteosExistentes++;
           }
         }
       }
     }
 
-    console.log(`Sorteos futuros creados para ${dias} días`);
+    console.log(`Sorteos: ${sorteosCreados} creados, ${sorteosExistentes} ya existían (${dias} días)`);
   } catch (error) {
     console.error("Error al crear sorteos futuros:", error);
   }
