@@ -1,17 +1,19 @@
 export const generarCartonBingo = () => {
   const numeros = new Set();
   while (numeros.size < 9) {
-    const num = Math.floor(Math.random() * 21) + 1;
-    numeros.add(num);
+    numeros.add(Math.floor(Math.random() * 21) + 1); // 1..21
   }
   return Array.from(numeros).sort((a, b) => a - b);
 };
 
-export const organizarCartonBingo = (numeros) => {
-  if (!Array.isArray(numeros) || numeros.length !== 9) {
-    throw new Error("El cartón debe tener 9 números");
-  }
+export const crearCartonBingoAutomatico = () => {
+  const cartonPlano = generarCartonBingo();
+  const matriz = organizarCartonBingo(cartonPlano);
+  return { cartonPlano, matriz, cartonJSON: JSON.stringify(cartonPlano) };
+};
 
+export const organizarCartonBingo = (numeros) => {
+  if (!Array.isArray(numeros) || numeros.length !== 9) throw new Error("Cartón inválido");
   return [
     [numeros[0], numeros[1], numeros[2]],
     [numeros[3], numeros[4], numeros[5]],
@@ -20,16 +22,10 @@ export const organizarCartonBingo = (numeros) => {
 };
 
 export const validarCartonBingo = (carton) => {
-  try {
-    if (!Array.isArray(carton) || carton.length !== 9) return false;
-
-    const numerosUnicos = new Set(carton);
-    if (numerosUnicos.size !== 9) return false;
-
-    return carton.every((n) => Number.isInteger(n) && n >= 1 && n <= 21);
-  } catch {
-    return false;
-  }
+  if (!Array.isArray(carton) || carton.length !== 9) return false;
+  const numerosUnicos = new Set(carton);
+  if (numerosUnicos.size !== 9) return false;
+  return carton.every((n) => Number.isInteger(n) && n >= 1 && n <= 21);
 };
 
 export const verificarLineasBingo = (carton, numerosGanadores) => {
@@ -91,13 +87,7 @@ export const formatearCartonBingo = (carton) => {
 };
 
 export const generarMultiplesCartones = (cantidad) => {
-  const cartones = [];
-
-  for (let i = 0; i < cantidad; i++) {
-    cartones.push(generarCartonBingo());
-  }
-
-  return cartones;
+  return Array.from({ length: cantidad }, () => generarCartonBingo());
 };
 
 export const validarNumerosGanadores = (numerosGanadores) => {
