@@ -1,0 +1,49 @@
+/admin/juegos:
+  get:
+    tags:
+      - Administradores
+    summary: Listar juegos
+    description: Obtiene todos los juegos activos e inactivos con sus reglas actuales
+    responses:
+      "200":
+        description: Lista de juegos obtenida correctamente
+      "401":
+        description: No autenticado
+      "403":
+        description: No autorizado
+
+/admin/juegos/{id}:
+  put:
+    tags:
+      - Administradores
+    summary: Actualizar reglas de un juego
+    description: Permite modificar reglas editables (inversionMinima, inversionMaxima, multiplicador, limitePorBoleto, horarios)
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            reglas:
+              inversionMinima: 5
+              inversionMaxima: 500
+              multiplicador: 60
+              limitePorBoleto: 10
+              horarios: ["11:00", "15:00", "21:00"]
+    responses:
+      "200":
+        description: Reglas actualizadas correctamente
+      "400":
+        description: Datos inválidos
+      "401":
+        description: No autenticado
+      "403":
+        description: No autorizado
+      "404":
+        description: Juego no encontrado

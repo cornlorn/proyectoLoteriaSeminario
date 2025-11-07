@@ -1,0 +1,15 @@
+/admin/sorteos:
+  get:
+    tags:
+      - Administradores
+    summary: Listar sorteos
+    description: Obtiene todos los sorteos con su juego asociado.
+    responses:
+      "200":
+        description: Lista de sorteos obtenida correctamente
+      "400":
+        description: Parámetros inválidos
+      "401":
+        description: No autenticado
+      "403":
+        description: No autorizado
