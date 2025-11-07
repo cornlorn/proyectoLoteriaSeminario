@@ -10,6 +10,7 @@ import { avatarRutas } from "./clientes/avatar.ruta.mjs";
 import { boletosRouter } from "./clientes/boletos.ruta.mjs";
 import { perfilRutas } from "./clientes/perfil.ruta.mjs";
 import { sorteosPublicosRouter } from "./publico/sorteos.ruta.mjs";
+import { buscarClienteRutas } from "./vendedores/buscar-cliente.ruta.mjs";
 import { depositoRutas } from "./vendedores/deposito.ruta.mjs";
 import { retiroRutas } from "./vendedores/retiro.ruta.mjs";
 
@@ -24,6 +25,7 @@ router.use("/admin/registrar", registroRutasAdmin);
 router.use("/admin/juegos", rutasJuegos);
 router.use("/admin/sorteos", rutasSorteos);
 
+router.use("/vendedores/buscar", buscarClienteRutas);
 router.use("/vendedores/depositar", depositoRutas);
 router.use("/vendedores/retirar", retiroRutas);
 
