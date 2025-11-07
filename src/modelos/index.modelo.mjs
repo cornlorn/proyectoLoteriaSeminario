@@ -4,6 +4,7 @@ import { Token } from "./token.modelo.mjs";
 import { Transaccion } from "./transaccion.modelo.mjs";
 import { Usuario } from "./usuario.modelo.mjs";
 import { Administrador } from "./administrador.modelo.mjs";
+import { Vendedor } from "./vendedor.modelo.mjs";
 
 Usuario.hasOne(Administrador, {
   foreignKey: "usuario_id",
@@ -11,8 +12,15 @@ Usuario.hasOne(Administrador, {
   onDelete: "CASCADE",
   onUpdate: "CASCADE",
 });
-
 Administrador.belongsTo(Usuario, { foreignKey: "usuario_id", as: "usuario" });
+
+Usuario.hasOne(Vendedor, {
+  foreignKey: "usuario_id",
+  as: "vendedor",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+Vendedor.belongsTo(Usuario, { foreignKey: "usuario_id", as: "usuario" });
 
 Usuario.hasOne(Cliente, {
   foreignKey: "usuario_id",

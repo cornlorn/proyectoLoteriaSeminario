@@ -6,6 +6,7 @@ import { registroRutas } from "./auth/registro.ruta.mjs";
 import { verificacionRutas } from "./auth/verificacion.ruta.mjs";
 import { avatarRutas } from "./clientes/avatar.ruta.mjs";
 import { perfilRutas } from "./clientes/perfil.ruta.mjs";
+import { depositoRutas } from "./vendedores/deposito.ruta.mjs";
 
 const router = Router();
 
@@ -15,6 +16,8 @@ router.use("/auth/correo", verificacionRutas);
 router.use("/auth/recuperacion", recuperacionRutas);
 
 router.use("/admin/registrar", registroRutasAdmin);
+
+router.use("/vendedores/depositar", depositoRutas);
 
 router.use("/clientes/perfil", perfilRutas);
 router.use("/clientes/avatar", avatarRutas);
