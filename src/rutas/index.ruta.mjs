@@ -7,6 +7,7 @@ import { recuperacionRutas } from "./auth/recuperacion.ruta.mjs";
 import { registroRutas } from "./auth/registro.ruta.mjs";
 import { verificacionRutas } from "./auth/verificacion.ruta.mjs";
 import { avatarRutas } from "./clientes/avatar.ruta.mjs";
+import { boletosRouter } from "./clientes/boletos.ruta.mjs";
 import { perfilRutas } from "./clientes/perfil.ruta.mjs";
 import { depositoRutas } from "./vendedores/deposito.ruta.mjs";
 import { retiroRutas } from "./vendedores/retiro.ruta.mjs";
@@ -27,5 +28,6 @@ router.use("/vendedores/retirar", retiroRutas);
 
 router.use("/clientes/perfil", perfilRutas);
 router.use("/clientes/avatar", avatarRutas);
+router.use("/clientes/boletos", boletosRouter);
 
 export { router as rutas };

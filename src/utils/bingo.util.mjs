@@ -1,7 +1,7 @@
 export const generarCartonBingo = () => {
   const numeros = new Set();
   while (numeros.size < 9) {
-    numeros.add(Math.floor(Math.random() * 21) + 1); // 1..21
+    numeros.add(Math.floor(Math.random() * 21) + 1);
   }
   return Array.from(numeros).sort((a, b) => a - b);
 };
