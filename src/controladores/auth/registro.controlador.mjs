@@ -44,7 +44,7 @@ export const registrar = async (request, response) => {
 
     await transaccion.commit();
 
-    await correoClienteRegistro(correo, codigo);
+    await correoClienteRegistro(correo, nombre, codigo);
     return response.status(201).send({ mensaje: "Usuario registrado correctamente" });
   } catch (error) {
     console.error("Error al registrar usuario:", error);
