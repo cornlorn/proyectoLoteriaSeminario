@@ -1,7 +1,7 @@
 /vendedores/depositar:
   post:
     tags:
-      - vendedores
+      - Vendedores
     summary: Realizar depósito
     description: Permite a un vendedor realizar un depósito en la billetera de un cliente.
     requestBody:
@@ -24,7 +24,7 @@
 /vendedores/retirar:
   post:
     tags:
-      - vendedores
+      - Vendedores
     summary: Realizar retiro
     description: Permite a un vendedor realizar un retiro de la billetera de un cliente.
     requestBody:
