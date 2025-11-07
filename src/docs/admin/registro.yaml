@@ -36,7 +36,7 @@
             correo: "cliente@correo.com"
             nombre: "Andrea"
             apellido: "González"
-            sexo: "F"
+            sexo: "femenino"
             nacimiento: "2000-05-20"
             telefono: "98273548"
     responses:

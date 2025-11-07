@@ -1,3 +1,4 @@
+import { enviarCorreo } from "../../utils/correo.util.mjs";
 import { plantillaClienteRegistro } from "./plantillas/cliente-registro.plantilla.mjs";
 
 export const correoClienteRegistro = async (destinatario, codigo) => {

@@ -10,7 +10,7 @@ export const transportador = nodemailer.createTransport({
 
 export const opciones = (destinatario, asunto, plantilla) => {
   return {
-    from: `Equipo de Loto <${EMAIL_USER}>`,
+    from: `Equipo de ${process.env.APP_NAME} <${EMAIL_USER}>`,
     to: destinatario,
     subject: asunto,
     html: plantilla,

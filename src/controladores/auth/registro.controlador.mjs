@@ -1,7 +1,7 @@
 import { sequelize } from "../../config/database.config.mjs";
 import { Billetera, Cliente, Token, Usuario } from "../../modelos/index.modelo.mjs";
 import { correoClienteRegistro } from "../../servicios/correo/correo.servicio.mjs";
-import { hashearContrasena } from "../../utils/password.util.mjs";
+import { generarCodigo, hashearContrasena } from "../../utils/password.util.mjs";
 
 export const registrar = async (request, response) => {
   const transaccion = await sequelize.transaction();
