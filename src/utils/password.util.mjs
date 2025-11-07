@@ -2,12 +2,12 @@ import bcrypt from "bcrypt";
 
 export const generarContrasena = () => {
   const caracteres = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
-  const array = new Uint32Array(longitud);
+  const array = new Uint32Array(12);
 
   crypto.getRandomValues(array);
 
   let contrasena = "";
-  for (let i = 0; i < longitud; i++) {
+  for (let i = 0; i < 12; i++) {
     const indice = array[i] % caracteres.length;
     contrasena += caracteres.charAt(indice);
   }

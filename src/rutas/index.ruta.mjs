@@ -14,7 +14,7 @@ router.use("/auth/registrar", registroRutas);
 router.use("/auth/correo", verificacionRutas);
 router.use("/auth/recuperacion", recuperacionRutas);
 
-router.use("/admin", registroRutasAdmin);
+router.use("/admin/registrar", registroRutasAdmin);
 
 router.use("/clientes/perfil", perfilRutas);
 router.use("/clientes/avatar", avatarRutas);
