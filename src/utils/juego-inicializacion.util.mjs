@@ -38,7 +38,7 @@ export const inicializarJuegos = async () => {
           inversionMinima: 10,
           inversionMaxima: 10,
           costoBoleto: 10,
-          limitePorBoleto: 100,
+          limitePorBoleto: 10,
           rangoNumeros: { min: 1, max: 21 },
           numerosEnCarton: 9,
           numerosGanadores: 7,

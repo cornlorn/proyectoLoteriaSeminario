@@ -57,7 +57,7 @@
     tags:
       - Clientes
     summary: Comprar cartones Bingo
-    description: Genera automáticamente uno o varios cartones de Bingo Con Todo.
+    description: Genera automáticamente uno o varios cartones de Bingo Con Todo (máximo 10 por compra).
     requestBody:
       required: true
       content:

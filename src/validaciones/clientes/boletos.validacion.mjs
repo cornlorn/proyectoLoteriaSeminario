@@ -10,7 +10,7 @@ const reglasCompraNumerica = [
 
 const reglasCompraBingo = [
   body("id").isUUID().withMessage("id inválido"),
-  body("cantidad").optional().isInt({ min: 1, max: 100 }).withMessage("cantidad debe ser entre 1 y 100"),
+  body("cantidad").optional().isInt({ min: 1, max: 10 }).withMessage("cantidad debe ser entre 1 y 10"),
 ];
 
 const reglasDetalleBoleto = [param("id").isUUID().withMessage("id inválido")];

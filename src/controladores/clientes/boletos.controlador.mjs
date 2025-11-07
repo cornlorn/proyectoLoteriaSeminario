@@ -98,8 +98,8 @@ export const comprarBoletoBingo = async (request, response) => {
   if (!id) {
     return response.status(400).send({ mensaje: "id requerido" });
   }
-  if (cantidad < 1 || cantidad > 100) {
-    return response.status(400).send({ mensaje: "Cantidad inválida (1-100)" });
+  if (cantidad < 1 || cantidad > 10) {
+    return response.status(400).send({ mensaje: "Cantidad inválida (1-10)" });
   }
 
   const transaction = await sequelize.transaction();
