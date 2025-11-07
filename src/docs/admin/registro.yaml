@@ -1,7 +1,7 @@
-/admin/registrar/admin:
+/admin/registrar/administrador:
   post:
     tags:
-      - Administración
+      - Administradores
     summary: Registrar administrador
     description: Crea una nueva cuenta de administrador (solo administradores)
     requestBody:
@@ -10,8 +10,8 @@
         application/json:
           example:
             correo: "admin@correo.com"
-            nombre: "Juan"
-            apellido: "Pérez"
+            nombre: "Roberto"
+            apellido: "Martínez"
     responses:
       "201":
         description: Administrador registrado correctamente
@@ -21,13 +21,11 @@
         description: No autenticado
       "403":
         description: No autorizado - Se requiere rol de administrador
-      "500":
-        description: Error interno del servidor
 
 /admin/registrar/cliente:
   post:
     tags:
-      - Administración
+      - Administradores
     summary: Registrar cliente
     description: Crea una nueva cuenta de cliente (solo administradores)
     requestBody:
@@ -36,11 +34,11 @@
         application/json:
           example:
             correo: "cliente@correo.com"
-            nombre: "María"
+            nombre: "Andrea"
             apellido: "González"
             sexo: "F"
-            nacimiento: "1990-01-01"
-            telefono: "+50212345678"
+            nacimiento: "2000-05-20"
+            telefono: "98273548"
     responses:
       "201":
         description: Cliente registrado correctamente
@@ -50,5 +48,3 @@
         description: No autenticado
       "403":
         description: No autorizado - Se requiere rol de administrador
-      "500":
-        description: Error interno del servidor
