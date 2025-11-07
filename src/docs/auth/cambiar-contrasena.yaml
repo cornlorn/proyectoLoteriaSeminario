@@ -1,0 +1,106 @@
+/auth/contrasena:
+  put:
+    tags:
+      - Auth
+    summary: Cambiar contraseña
+    description: Permite a un usuario autenticado cambiar su contraseña proporcionando la contraseña actual y la nueva contraseña.
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            required:
+              - contrasenaActual
+              - contrasenaNueva
+            properties:
+              contrasenaActual:
+                type: string
+                format: password
+                description: La contraseña actual del usuario
+                example: "Contrasena2025"
+              contrasenaNueva:
+                type: string
+                format: password
+                description: La nueva contraseña (mínimo 8 caracteres, debe contener mayúscula, minúscula y número)
+                example: "Contrasena2026"
+    responses:
+      "200":
+        description: Contraseña actualizada correctamente
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mensaje:
+                  type: string
+                  example: "Contraseña actualizada correctamente"
+      "400":
+        description: Datos de validación incorrectos
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                errores:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      campo:
+                        type: string
+                        example: "contrasenaNueva"
+                      mensaje:
+                        type: string
+                        example: "Debe tener al menos 8 caracteres"
+            examples:
+              passwordMismatch:
+                value:
+                  errores:
+                    - campo: "confirmarContrasena"
+                      mensaje: "Las contraseñas no coinciden"
+              weakPassword:
+                value:
+                  errores:
+                    - campo: "contrasenaNueva"
+                      mensaje: "Debe contener una mayúscula"
+                    - campo: "contrasenaNueva"
+                      mensaje: "Debe contener un número"
+      "401":
+        description: No autenticado o contraseña actual incorrecta
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mensaje:
+                  type: string
+            examples:
+              noToken:
+                value:
+                  mensaje: "No se proporcionó un token"
+              wrongPassword:
+                value:
+                  mensaje: "La contraseña actual es incorrecta"
+      "404":
+        description: Usuario no encontrado
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mensaje:
+                  type: string
+                  example: "Usuario no encontrado"
+      "500":
+        description: Error interno del servidor
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                mensaje:
+                  type: string
+                  example: "Error interno del servidor"

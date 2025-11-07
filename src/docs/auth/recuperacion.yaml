@@ -16,26 +16,6 @@
       "404":
         description: Usuario no encontrado
 
-/auth/recuperacion/reenviar:
-  post:
-    tags:
-      - Autenticación
-    summary: Reenviar código de recuperación
-    description: Reenvía el código de recuperación activo al correo del usuario
-    requestBody:
-      required: true
-      content:
-        application/json:
-          example:
-            correo: "cliente@correo.com"
-    responses:
-      "200":
-        description: Código de recuperación reenviado
-      "400":
-        description: No hay un código de recuperación activo o ha expirado
-      "404":
-        description: Usuario no encontrado
-
 /auth/recuperacion/restablecer:
   post:
     tags:

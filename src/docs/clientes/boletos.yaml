@@ -1,0 +1,74 @@
+/clientes/boletos:
+  post:
+    tags:
+      - Clientes
+    summary: Comprar boleto (juego numérico)
+    description: Crea un boleto para La Diaria o Juega Tres con múltiples jugadas.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            id: "uuid-juego-la-diaria"
+            jugadas:
+              - numero: "05"
+                monto: 10
+              - numero: "99"
+                monto: 20
+    responses:
+      "201":
+        description: Boleto comprado correctamente
+      "400":
+        description: Datos inválidos o saldo insuficiente
+      "401":
+        description: No autenticado
+
+  get:
+    tags:
+      - Clientes
+    summary: Listar boletos del cliente
+    description: Devuelve todos los boletos del cliente autenticado con jugadas y sorteo asociado.
+    responses:
+      "200":
+        description: Lista de boletos
+      "401":
+        description: No autenticado
+
+/clientes/boletos/{id}:
+  get:
+    tags:
+      - Clientes
+    summary: Detalle de boleto
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+          format: uuid
+    responses:
+      "200":
+        description: Detalle del boleto
+      "404":
+        description: Boleto no encontrado
+
+/clientes/boletos/bingo:
+  post:
+    tags:
+      - Clientes
+    summary: Comprar cartones Bingo
+    description: Genera automáticamente uno o varios cartones de Bingo Con Todo (máximo 10 por compra).
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            id: "uuid-juego-bingo"
+            cantidad: 3
+    responses:
+      "201":
+        description: Cartones comprados
+      "400":
+        description: Datos inválidos o saldo insuficiente
+      "401":
+        description: No autenticado

@@ -1,184 +1,163 @@
-export const plantillaBienvenidaCliente = (nombre, sexo, token) => {
-  const saludo = sexo === "femenino" ? "Bienvenida" : "Bienvenido";
-  const fecha = new Date().getFullYear();
-  const app = "Loto";
-
-  return `
+export const plantillaClienteRegistro = ({ correo, nombre, codigo }) => `
 <!DOCTYPE html>
 <html lang="es">
-<head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Verificación de Código - ${app}</title>
-  <!-- Fuentes: Roboto y Roboto Mono -->
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;600;700&family=Roboto+Mono:wght@500&display=swap" rel="stylesheet">
-  <style>
-    /* VARIABLES DE COLOR (Neutrales) */
-    :root {
-      --bg-color: #f8fafc; /* Gris muy claro (fondo) */
-      --card-bg: #ffffff;  /* Blanco (tarjeta principal) */
-      --border-color: #e2e8f0; /* Gris pálido (bordes) */
-      --text-dark: #1e293b; /* Slate Oscuro (títulos y texto principal) */
-      --text-medium: #475569; /* Gris medio (texto de cuerpo) */
-      --highlight-bg: #f1f5f9; /* Gris suave (caja de código) */
-      --button-bg: #cbd5e1; /* Gris claro (botón) */
-      --button-hover: #94a3b8; /* Gris medio (hover de botón) */
-    }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>¡Bienvenido/a a ${process.env.APP_NAME}!</title>
 
-    body {
-      margin: 0;
-      padding: 0;
-      background-color: var(--bg-color);
-      font-family: 'Roboto', sans-serif;
-      color: var(--text-dark);
-      line-height: 1.5;
-    }
+    <link
+      href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;700&family=IBM+Plex+Mono:wght@700&display=swap"
+      rel="stylesheet"
+    />
 
-    /* Contenedor principal del email */
-    .email-container {
-      max-width: 600px;
-      margin: 40px auto;
-      background-color: var(--card-bg);
-      border: 1px solid var(--border-color);
-      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
-      width: 90%;
-      box-sizing: border-box;
-    }
+    <style>
+      body,
+      table,
+      td,
+      a {
+        -webkit-text-size-adjust: 100%;
+        -ms-text-size-adjust: 100%;
+        margin: 0;
+        padding: 0;
+        border: 0;
 
-    /* Encabezado y logo */
-    .header {
-      text-align: center;
-      padding: 24px 20px;
-      background-color: var(--highlight-bg);
-      border-bottom: 1px solid var(--border-color);
-    }
-    .header h1 {
-      margin: 0;
-      font-size: 24px;
-      font-weight: 700;
-      color: var(--text-dark);
-    }
-    
-    /* Sección de Contenido */
-    .content {
-      padding: 32px 30px;
-      color: var(--text-medium);
-    }
-    .content h2 {
-      margin-top: 0;
-      font-size: 20px;
-      font-weight: 600;
-      color: var(--text-dark);
-      margin-bottom: 20px;
-    }
-    .content p {
-      margin: 16px 0;
-      font-size: 15px;
-      line-height: 1.7;
-    }
-
-    /* Caja del Código de Verificación */
-    .code-box {
-      text-align: center;
-      background-color: var(--highlight-bg);
-      border: 1px solid var(--border-color);
-      padding: 20px 0;
-      margin: 30px 0;
-      font-family: 'Roboto Mono', monospace;
-      font-size: 34px;
-      letter-spacing: 6px;
-      font-weight: 500;
-      color: var(--text-dark);
-      user-select: all;
-      display: block;
-    }
-
-    /* Botón CTA (Call to Action) */
-    .button-wrapper {
-      text-align: center;
-      margin-top: 30px;
-    }
-    .button {
-      display: inline-block;
-      background-color: var(--button-bg);
-      color: var(--text-dark);
-      text-decoration: none;
-      padding: 12px 28px;
-      font-weight: 600;
-      font-size: 15px;
-      border: 1px solid var(--button-hover);
-      transition: background-color 0.2s;
-    }
-    .button:hover {
-      background-color: var(--button-hover);
-    }
-
-    /* Pie de Página */
-    .footer {
-      text-align: center;
-      padding: 20px;
-      font-size: 12px;
-      color: var(--text-medium);
-      border-top: 1px solid var(--border-color);
-      margin-top: 20px;
-    }
-
-    /* Media Query para móvil */
-    @media (max-width: 480px) {
-      .email-container {
-        margin: 20px auto;
-        width: 100%;
-        border-left: none;
-        border-right: none;
+        font-family: "IBM Plex Sans", Arial, sans-serif;
+        line-height: 1.6;
       }
-      .content {
+
+      body {
+        background-color: #f7f7f7;
         padding: 20px;
       }
-      .code-box {
-        font-size: 28px;
-        letter-spacing: 4px;
+
+      .container {
+        width: 100%;
+        max-width: 600px;
+        margin: 0 auto;
+        background-color: #ffffff;
+
+        box-shadow: 0 0 0 1px #e0e0e0;
       }
-    }
-  </style>
-</head>
-<body>
-  
-  <!-- Contenedor general del email -->
-  <div class="email-container">
-    
-    <!-- Encabezado con el logo/nombre de la app -->
-    <div class="header">
-      <h1>[ Logo Aquí ] ${app}</h1>
-    </div>
 
-    <!-- Contenido principal y mensaje -->
-    <div class="content">
-      <h2>¡${saludo} ${nombre} a ${app}!</h2>
-      <p>Gracias por registrarte en nuestra plataforma. ¡Estamos felices de tenerte a bordo!</p>
-      
-      <p>Para asegurar tu cuenta y completar tu registro, por favor utiliza el siguiente código de verificación de 6 dígitos:</p>
+      .content-area {
+        padding: 30px;
+      }
 
-      <!-- Código destacado -->
-      <div class="code-box">${token}</div>
+      .header {
+        background-color: #1a1a1a;
+        color: #ffffff;
+        padding: 25px 30px;
+        font-size: 24px;
+        text-align: center;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+      }
 
-      <p>Para mayor comodidad, también puedes hacer clic en el botón de abajo para ser dirigido automáticamente a la página de verificación. Este código es válido por <strong>12 horas</strong>.</p>
-      
-      <!-- Botón de acción -->
-      <div class="button-wrapper">
-        <a href="#" class="button">Completar Mi Registro</a>
-      </div>
+      .paragraph {
+        font-size: 16px;
+        color: #333333;
+        margin-bottom: 20px;
+      }
 
-      <p style="margin-top: 30px;">Si tienes alguna pregunta, no dudes en contactarnos.</p>
-      <p>Saludos cordiales,<br>El equipo de ${app}.</p>
-    </div>
+      .code-container {
+        background-color: #f2f2f2;
+        padding: 20px;
+        text-align: center;
+        margin: 25px 0;
+        border: 2px solid #e0e0e0;
+      }
 
-    <!-- Pie de página con información legal -->
-    <div class="footer">
-      <p>Este es un correo electrónico automático. Por favor, no respondas a este mensaje.</p>
-      <p>&copy; ${fecha} ${app}. Todos los derechos reservados. | <a href="#" style="color: var(--text-medium);">Política de Privacidad</a></p>
-    </div>
+      .code-title {
+        font-size: 14px;
+        color: #555555;
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+      }
 
-  </div>
-</body>
-</html>`;
-};
+      .code {
+        font-size: 30px;
+        font-weight: bold;
+        color: #1a1a1a;
+        letter-spacing: 5px;
+
+        font-family: "IBM Plex Mono", monospace;
+        display: block;
+      }
+
+      .footer {
+        text-align: center;
+        font-size: 12px;
+        color: #777777;
+        padding: 30px;
+        border-top: 1px solid #e0e0e0;
+      }
+
+      @media screen and (max-width: 525px) {
+        .content-area {
+          padding: 15px;
+        }
+        .header {
+          font-size: 20px;
+        }
+        .code {
+          font-size: 24px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+      <tr>
+        <td align="center">
+          <table role="presentation" border="0" cellpadding="0" cellspacing="0" class="container">
+            <tr>
+              <td class="header">${process.env.APP_NAME}</td>
+            </tr>
+
+            <tr>
+              <td class="content-area">
+                <p class="paragraph">Hola ${nombre},</p>
+                <p class="paragraph">
+                  Te damos una cordial bienvenida a ${process.env.APP_NAME}, tu destino para participar en los sorteos
+                  más emocionantes. ¡Estás a un paso de empezar a jugar y ganar!
+                </p>
+                <p class="paragraph">
+                  Para asegurar tu cuenta y verificar tu correo electrónico, por favor, utiliza el siguiente código
+                  cuando inicies sesión por primera vez:
+                </p>
+
+                <table role="presentation" border="0" cellpadding="0" cellspacing="0" width="100%">
+                  <tr>
+                    <td class="code-container">
+                      <div class="code-title">TU CÓDIGO DE VERIFICACIÓN</div>
+                      <div class="code">${codigo}</div>
+                    </td>
+                  </tr>
+                </table>
+
+                <p class="paragraph">Este código solo es válido por <b>12 horas</b>. ¡No lo compartas con nadie!</p>
+
+                <p class="paragraph">
+                  Puedes iniciar sesión en tu aplicación. Si tienes alguna pregunta, no dudes en contactar a nuestro
+                  equipo de soporte.
+                </p>
+                <p class="paragraph" style="margin-bottom: 0">¡Mucha suerte en tu primer sorteo!</p>
+              </td>
+            </tr>
+
+            <tr>
+              <td class="footer">
+                <p>&copy; 2025 ${process.env.APP_NAME}. Todos los derechos reservados.</p>
+                <p>Este correo electrónico fue enviado a ${correo}.</p>
+                <p>Si no te registraste, por favor ignora este mensaje.</p>
+              </td>
+            </tr>
+          </table>
+        </td>
+      </tr>
+    </table>
+  </body>
+</html>
+`;

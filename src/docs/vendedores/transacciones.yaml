@@ -1,0 +1,45 @@
+/vendedores/depositar:
+  post:
+    tags:
+      - Vendedores
+    summary: Realizar depósito
+    description: Permite a un vendedor realizar un depósito en la billetera de un cliente.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            id: "1ff08656-5f6c-411b-abb4-ba242d8e5527"
+            monto: 100.00
+    responses:
+      "201":
+        description: Depósito realizado correctamente
+      "400":
+        description: Datos inválidos o fondos insuficientes
+      "401":
+        description: No autenticado
+      "403":
+        description: No autorizado - Se requiere rol de vendedor
+
+/vendedores/retirar:
+  post:
+    tags:
+      - Vendedores
+    summary: Realizar retiro
+    description: Permite a un vendedor realizar un retiro de la billetera de un cliente.
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            id: "1ff08656-5f6c-411b-abb4-ba242d8e5527"
+            monto: 50.00
+    responses:
+      "200":
+        description: Retiro realizado correctamente
+      "400":
+        description: Datos inválidos o fondos insuficientes
+      "401":
+        description: No autenticado
+      "403":
+        description: No autorizado - Se requiere rol de vendedor
