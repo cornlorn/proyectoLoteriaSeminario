@@ -1,4 +1,5 @@
 import { Token } from "../../modelos/index.modelo.mjs";
+import { generarCodigo } from "../../utils/password.util.mjs";
 
 export const verificar = async (request, response) => {
   try {
@@ -49,7 +50,7 @@ export const reenviar = async (request, response) => {
 
     await Token.destroy({ where: { usuario_id: usuario.id, tipo: "verificacion" } });
 
-    const codigo = Math.floor(100000 + Math.random() * 900000).toString();
+    const codigo = generarCodigo();
     const expira = new Date();
     expira.setHours(expira.getHours() + 12);
 
