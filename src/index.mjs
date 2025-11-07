@@ -6,6 +6,7 @@ import swaggerUI from "swagger-ui-express";
 import { database } from "./config/database.config.mjs";
 import { specs } from "./config/swagger.config.mjs";
 import { rutas } from "./rutas/index.ruta.mjs";
+import { inicializarAdministrador } from "./utils/admin.util.mjs";
 
 const app = express();
 
@@ -29,6 +30,7 @@ app.use((error, _request, response, _next) => {
 
 try {
   await database();
+  await inicializarAdministrador();
   app.listen(SERVER_PORT, () => {
     console.log(`Servidor iniciado correctamente en: http://localhost:${SERVER_PORT}`);
     console.log(`Documentación API disponible en: http://localhost:${SERVER_PORT}/api/docs`);

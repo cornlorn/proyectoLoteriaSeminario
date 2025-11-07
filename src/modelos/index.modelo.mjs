@@ -3,6 +3,16 @@ import { Cliente } from "./cliente.modelo.mjs";
 import { Token } from "./token.modelo.mjs";
 import { Transaccion } from "./transaccion.modelo.mjs";
 import { Usuario } from "./usuario.modelo.mjs";
+import { Administrador } from "./administrador.modelo.mjs";
+
+Usuario.hasOne(Administrador, {
+  foreignKey: "usuario_id",
+  as: "administrador",
+  onDelete: "CASCADE",
+  onUpdate: "CASCADE",
+});
+
+Administrador.belongsTo(Usuario, { foreignKey: "usuario_id", as: "usuario" });
 
 Usuario.hasOne(Cliente, {
   foreignKey: "usuario_id",
@@ -36,4 +46,4 @@ Billetera.hasMany(Transaccion, {
 });
 Transaccion.belongsTo(Billetera, { foreignKey: "billetera_id", as: "billetera" });
 
-export { Billetera, Cliente, Token, Transaccion, Usuario };
+export { Billetera, Cliente, Token, Transaccion, Usuario, Administrador };
