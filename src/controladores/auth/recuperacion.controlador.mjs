@@ -1,4 +1,5 @@
 import { Token, Usuario } from "../../modelos/index.modelo.mjs";
+import { correoRecuperacionContrasena } from "../../servicios/correo/correo.servicio.mjs";
 import { generarCodigo, hashearContrasena } from "../../utils/password.util.mjs";
 
 export const solicitar = async (request, response) => {
@@ -17,17 +18,10 @@ export const solicitar = async (request, response) => {
 
     await Token.destroy({ where: { usuario_id: usuario.id, tipo: "recuperacion" } });
 
-    await Token.create({
-      usuario_id: usuario.id,
-      tipo: "recuperacion",
-      codigo: codigo,
-      expira: expira,
-    });
+    await Token.create({ usuario_id: usuario.id, tipo: "recuperacion", codigo: codigo, expira: expira });
 
-    console.log("Código de recuperación generado:", codigo);
-    return response
-      .status(200)
-      .send({ mensaje: "Se ha enviado un código de recuperación a tu correo" });
+    await correoRecuperacionContrasena(correo, codigo);
+    return response.status(200).send({ mensaje: "Se ha enviado un código de recuperación a tu correo" });
   } catch (error) {
     console.error("Error al solicitar recuperación:", error);
     return response.status(500).send({ error: "Error interno del servidor" });
@@ -44,9 +38,7 @@ export const restablecer = async (request, response) => {
       return response.status(404).send({ error: "Usuario no encontrado" });
     }
 
-    const token = await Token.findOne({
-      where: { usuario_id: usuario.id, tipo: "recuperacion", codigo: codigo },
-    });
+    const token = await Token.findOne({ where: { usuario_id: usuario.id, tipo: "recuperacion", codigo: codigo } });
 
     if (!token) {
       return response.status(400).send({ error: "Código de recuperación inválido" });

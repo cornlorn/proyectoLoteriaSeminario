@@ -1,5 +1,6 @@
 import { sequelize } from "../../../config/database.config.mjs";
 import { Administrador, Usuario } from "../../../modelos/index.modelo.mjs";
+import { correoEnvioCredenciales } from "../../../servicios/correo/correo.servicio.mjs";
 import { generarContrasena, hashearContrasena } from "../../../utils/password.util.mjs";
 
 export const registrarAdministrador = async (request, response) => {
@@ -16,12 +17,7 @@ export const registrarAdministrador = async (request, response) => {
     const contrasena = generarContrasena();
 
     const usuario = await Usuario.create(
-      {
-        correo: correo,
-        contrasena: await hashearContrasena(contrasena),
-        rol: "administrador",
-        verificado: true,
-      },
+      { correo: correo, contrasena: await hashearContrasena(contrasena), rol: "administrador", verificado: true },
       { transaction: transaccion },
     );
 
@@ -32,7 +28,7 @@ export const registrarAdministrador = async (request, response) => {
 
     await transaccion.commit();
 
-    console.log("Usuario registrado:", correo, contrasena);
+    await correoEnvioCredenciales(correo, nombre, contrasena);
     return response.status(201).send({ mensaje: "Usuario registrado correctamente" });
   } catch (error) {
     console.error("Error al registrar usuario:", error);

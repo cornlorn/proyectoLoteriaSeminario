@@ -1,5 +1,6 @@
 import { sequelize } from "../../../config/database.config.mjs";
 import { Billetera, Cliente, Token, Usuario } from "../../../modelos/index.modelo.mjs";
+import { correoEnvioCredenciales } from "../../../servicios/correo/correo.servicio.mjs";
 import {
   generarCodigo,
   generarContrasena,
@@ -49,8 +50,8 @@ export const registrarCliente = async (request, response) => {
 
     await transaccion.commit();
 
-    console.log("Usuario registrado:", correo, contrasena, codigo);
-    return response.status(201).send({ mensaje: "Usuario registrado correctamente" });
+  await correoEnvioCredenciales(correo, nombre, contrasena);
+  return response.status(201).send({ mensaje: "Usuario registrado correctamente" });
   } catch (error) {
     console.error("Error al registrar usuario:", error);
     await transaccion.rollback();

@@ -1,4 +1,5 @@
 import { Token } from "../../modelos/index.modelo.mjs";
+import { correoVerificacion } from "../../servicios/correo/correo.servicio.mjs";
 import { generarCodigo } from "../../utils/password.util.mjs";
 
 export const verificar = async (request, response) => {
@@ -14,9 +15,7 @@ export const verificar = async (request, response) => {
       return response.status(400).send({ error: "El correo ya está verificado" });
     }
 
-    const token = await Token.findOne({
-      where: { usuario_id: usuario.id, tipo: "verificacion", codigo: codigo },
-    });
+    const token = await Token.findOne({ where: { usuario_id: usuario.id, tipo: "verificacion", codigo: codigo } });
 
     if (!token) {
       return response.status(400).send({ error: "Código de verificación inválido" });
@@ -54,13 +53,8 @@ export const reenviar = async (request, response) => {
     const expira = new Date();
     expira.setHours(expira.getHours() + 12);
 
-    await Token.create({
-      usuario_id: usuario.id,
-      tipo: "verificacion",
-      codigo: codigo,
-      expira: expira,
-    });
-
+    await Token.create({ usuario_id: usuario.id, tipo: "verificacion", codigo: codigo, expira: expira });
+    await correoVerificacion(usuario.correo, usuario.nombre, codigo);
     return response.status(201).send({ mensaje: "Código de verificación enviado", token: codigo });
   } catch (error) {
     console.error("Error al verificar correo:", error);

@@ -1,4 +1,5 @@
 import { Usuario } from "../../modelos/index.modelo.mjs";
+import { correoCambioContrasena } from "../../servicios/correo/correo.servicio.mjs";
 import { compararContrasena, hashearContrasena } from "../../utils/password.util.mjs";
 
 export const cambiarContrasena = async (request, response) => {
@@ -20,6 +21,7 @@ export const cambiarContrasena = async (request, response) => {
     const contrasenaHasheada = await hashearContrasena(contrasenaNueva);
     await usuario.update({ contrasena: contrasenaHasheada });
 
+    await correoCambioContrasena(usuario.correo);
     response.status(200).send({ mensaje: "Contraseña actualizada correctamente" });
   } catch (error) {
     console.error("Error al cambiar la contraseña:", error);
