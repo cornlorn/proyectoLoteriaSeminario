@@ -19,8 +19,22 @@ export const autenticar = async (request, response, next) => {
     }
 
     request.usuario = usuario;
+    next();
   } catch (error) {
-    return response.status(500).send({ mensaje: "Error interno del servidor" });
+    return response.status(401).send({ mensaje: "Token inválido" });
   }
-  next();
+};
+
+export const verificarRol = (rol) => {
+  return (request, response, next) => {
+    if (!request.usuario) {
+      return response.status(401).send({ mensaje: "No autenticado" });
+    }
+
+    if (request.usuario.rol !== rol) {
+      return response.status(403).send({ mensaje: "No autorizado" });
+    }
+
+    next();
+  };
 };

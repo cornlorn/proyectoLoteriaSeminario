@@ -1,0 +1,54 @@
+/admin/registrar/admin:
+  post:
+    tags:
+      - Administración
+    summary: Registrar administrador
+    description: Crea una nueva cuenta de administrador (solo administradores)
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            correo: "admin@correo.com"
+            nombre: "Juan"
+            apellido: "Pérez"
+    responses:
+      "201":
+        description: Administrador registrado correctamente
+      "400":
+        description: Datos inválidos o correo ya registrado
+      "401":
+        description: No autenticado
+      "403":
+        description: No autorizado - Se requiere rol de administrador
+      "500":
+        description: Error interno del servidor
+
+/admin/registrar/cliente:
+  post:
+    tags:
+      - Administración
+    summary: Registrar cliente
+    description: Crea una nueva cuenta de cliente (solo administradores)
+    requestBody:
+      required: true
+      content:
+        application/json:
+          example:
+            correo: "cliente@correo.com"
+            nombre: "María"
+            apellido: "González"
+            sexo: "F"
+            nacimiento: "1990-01-01"
+            telefono: "+50212345678"
+    responses:
+      "201":
+        description: Cliente registrado correctamente
+      "400":
+        description: Datos inválidos o correo ya registrado
+      "401":
+        description: No autenticado
+      "403":
+        description: No autorizado - Se requiere rol de administrador
+      "500":
+        description: Error interno del servidor
